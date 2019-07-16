@@ -1,8 +1,8 @@
-package ai;
+package com.qstpss.ai;
 
-import model.Cell;
-import model.GameField;
-import model.State;
+import com.qstpss.model.Cell;
+import com.qstpss.model.GameField;
+import com.qstpss.model.State;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

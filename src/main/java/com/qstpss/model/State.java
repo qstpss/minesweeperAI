@@ -1,4 +1,4 @@
-package model;
+package com.qstpss.model;
 
 public enum State {
     CLOSED,

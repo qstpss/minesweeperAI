@@ -1,6 +1,6 @@
-import ai.GameDifficulty;
-import ai.MineSweeperBot;
-import model.GameField;
+package com.qstpss.ai;
+
+import com.qstpss.Driver;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

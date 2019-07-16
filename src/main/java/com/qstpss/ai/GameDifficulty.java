@@ -1,4 +1,4 @@
-package ai;
+package com.qstpss.ai;
 
 public enum GameDifficulty {
     BEGINNER,
