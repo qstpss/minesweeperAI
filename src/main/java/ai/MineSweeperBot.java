@@ -1,43 +1,109 @@
 package ai;
 
+import model.Cell;
 import model.GameField;
+import model.State;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import java.util.Objects;
+
+import java.util.*;
 
 
 public class MineSweeperBot {
 
     private WebDriver driver;
     private GameField gameField;
+    private GameDifficulty difficulty;
 
     public MineSweeperBot(WebDriver driver) {
         this.driver = Objects.requireNonNull(driver);
     }
 
     public void startNewGame(GameDifficulty difficulty) {
+        this.difficulty = difficulty;
         WebElement gameOptionsElement = driver.findElement(By.cssSelector("#options-link"));
         gameOptionsElement.click();
         WebElement gameDifficultyElement = null;
+        int amountOfMines;
+        int sizeX;
+        int sizeY;
         switch (difficulty) {
             case BEGINNER:
                 gameDifficultyElement = driver.findElement(By.cssSelector("#beginner"));
+                amountOfMines = 10;
+                sizeX = 9;
+                sizeY = 9;
                 break;
             case INTERMEDIATE:
                 gameDifficultyElement = driver.findElement(By.cssSelector("#intermediate"));
+                amountOfMines = 40;
+                sizeX = 16;
+                sizeY = 16;
                 break;
             case EXPERT:
+                amountOfMines = 99;
+                sizeX = 30;
+                sizeY = 16;
                 gameDifficultyElement = driver.findElement(By.cssSelector("#expert"));
                 break;
-            case SPECIAL:
+            default:
                 gameDifficultyElement = driver.findElement(By.cssSelector("#custom"));
                 throw new UnsupportedOperationException();
                 //todo add selecting a size amount of mines
         }
+        gameField = new GameField(sizeX, sizeY, amountOfMines);
         gameDifficultyElement.click();
-        WebElement startGameElement = driver.findElement(By.cssSelector("#options > tbody > tr:nth-child(7) > td:nth-child(1) > input"));
+        WebElement startGameElement =
+                driver.findElement(By.cssSelector("#options > tbody > tr:nth-child(7) > td:nth-child(1) > input"));
         startGameElement.click();
+    }
+
+    public void readToGameFieldObj() {
+        Cell[][] field = gameField.getField();
+        for (int y = 0; y < gameField.getSizeY(); y++) {
+            for (int x = 0; x < gameField.getSizeX(); x++) {
+                String cellId = String.valueOf(y + 1) + "_" + String.valueOf(x + 1);
+                WebElement cellElement = driver.findElement(By.id(cellId));
+                String cellClassValue = cellElement.getAttribute("class");
+                Integer adjacentMinesCount = null;
+                if (cellClassValue.contains("square open")) {
+                    adjacentMinesCount = Integer.valueOf(
+                            cellElement.getAttribute("class")
+                                    .replaceAll("square open", ""));
+                }
+                State cellState;
+                if (adjacentMinesCount != null) {
+                    cellState = State.OPENED;
+                } else {
+                    if (cellClassValue.contains("square bombflagged")) {
+                        cellState = State.MINED;
+                    } else {
+                        cellState = State.CLOSED;
+                    }
+                }
+                field[y][x] = new Cell(cellState, adjacentMinesCount, x, y);
+            }
+        }
+    }
+
+    public void clickRandomCell() {
+        Cell[][] field = gameField.getField();
+        List<Cell> closedCells = new ArrayList<>();
+        for (int y = 0; y < gameField.getSizeY(); y++) {
+            for (int x = 0; x < gameField.getSizeX(); x++) {
+                Cell cell = field[y][x];
+                if (cell.getState() == State.CLOSED) {
+                    closedCells.add(cell);
+                }
+            }
+        }
+        Random random = new Random(System.currentTimeMillis());
+        int rand = random.nextInt(closedCells.size());
+        Cell randomCell = closedCells.get(rand);
+        String cellId = randomCell.getCoordinateY() + 1 + "_" + randomCell.getCoordinateX() + 1;
+        WebElement cellElement = driver.findElement(By.id(cellId));
+        cellElement.click();
     }
 
     public int getMinesCountFromIndicator() {
@@ -58,9 +124,5 @@ public class MineSweeperBot {
 
     public GameField getGameField() {
         return gameField;
-    }
-
-    public void setGameField(GameField gameField) {
-        this.gameField = gameField;
     }
 }
