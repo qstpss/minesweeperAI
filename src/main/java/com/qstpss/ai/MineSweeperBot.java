@@ -1,5 +1,6 @@
 package com.qstpss.ai;
 
+import com.qstpss.helpers.MineSweeperBotHelper;
 import com.qstpss.model.Cell;
 import com.qstpss.model.GameField;
 import com.qstpss.model.State;
@@ -59,6 +60,7 @@ public class MineSweeperBot {
         startGameElement.click();
     }
 
+    //works very slow
     public void readToGameFieldObj() {
         Cell[][] field = gameField.getField();
         for (int y = 0; y < gameField.getSizeY(); y++) {
@@ -88,16 +90,7 @@ public class MineSweeperBot {
     }
 
     public void clickRandomCell() {
-        Cell[][] field = gameField.getField();
-        List<Cell> closedCells = new ArrayList<>();
-        for (int y = 0; y < gameField.getSizeY(); y++) {
-            for (int x = 0; x < gameField.getSizeX(); x++) {
-                Cell cell = field[y][x];
-                if (cell.getState() == State.CLOSED) {
-                    closedCells.add(cell);
-                }
-            }
-        }
+        List<Cell> closedCells = MineSweeperBotHelper.getClosedCells(gameField);
         Random random = new Random(System.currentTimeMillis());
         int rand = random.nextInt(closedCells.size());
         Cell randomCell = closedCells.get(rand);

@@ -13,6 +13,10 @@ public class Cell {
     public Cell(State state, Integer adjacentMinesCount, int positionX, int positionY) {
         this.state = state;
         this.adjacentMinesCount = adjacentMinesCount;
+        if (state != State.OPENED && adjacentMinesCount != null) {
+            throw new IllegalStateException("In state " + state +
+                    " cell doesn't contain defined number of mines = " + adjacentMinesCount);
+        }
         this.positionX = positionX;
         this.positionY = positionY;
     }

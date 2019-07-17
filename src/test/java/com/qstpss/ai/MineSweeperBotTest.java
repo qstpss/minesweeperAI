@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ public class MineSweeperBotTest {
         int minesCount = bot.getMinesCountFromIndicator();
         assertEquals(10, minesCount);
     }
+
     @Test
     void startNewGameIntermediateTest() {
         driver.get("http://minesweeperonline.com");
@@ -41,6 +43,7 @@ public class MineSweeperBotTest {
         int minesCount = bot.getMinesCountFromIndicator();
         assertEquals(40, minesCount);
     }
+
     @Test
     void startNewGameExpertTest() {
         driver.get("http://minesweeperonline.com");
@@ -50,22 +53,391 @@ public class MineSweeperBotTest {
     }
 
     @Test
-    void readToGameFieldObjTest() {
+    void readToGameFieldObjBeginnerTest() {
         File testHtmlPage = new File("src/test/resources/readBeginner.html");
         driver.get("file:///" + testHtmlPage.getAbsolutePath());
         GameField beginnerField = new GameField(9, 9, 10);
         bot.setGameField(beginnerField);
         bot.readToGameFieldObj();
         Cell[][] actualField = bot.getGameField().getField();
-        List<Cell> expectedCells = getExpectedCells();
+        Set<Cell> expectedCells = getBeginnerExpectedCells();
         expectedCells.forEach(cell ->
                 assertEquals(cell,
                         actualField[cell.getPositionY() - 1][cell.getPositionX() - 1]));
 
     }
 
-    private List<Cell> getExpectedCells() {
-        return new ArrayList<>(){{
+    @Test
+    void readToGameFieldObjSpecialTest() {
+        File testHtmlPage = new File("src/test/resources/readSpecial.html");
+        driver.get("file:///" + testHtmlPage.getAbsolutePath());
+        GameField specialField = new GameField(23, 15, 45);
+        bot.setGameField(specialField);
+        bot.readToGameFieldObj();
+        Cell[][] actualField = bot.getGameField().getField();
+        Set<Cell> expectedCells = getSpecialExpectedCells();
+        expectedCells.forEach(cell ->
+                assertEquals(cell,
+                        actualField[cell.getPositionY() - 1][cell.getPositionX() - 1]));
+    }
+
+    @AfterAll
+    static void close() {
+        Driver.INSTANCE.release();
+    }
+
+    private Set<Cell> getSpecialExpectedCells() {
+        return new HashSet<>() {{
+            add(new Cell(State.OPENED, 0, 1, 1));
+            add(new Cell(State.OPENED, 0, 2, 1));
+            add(new Cell(State.OPENED, 0, 3, 1));
+            add(new Cell(State.OPENED, 0, 4, 1));
+            add(new Cell(State.OPENED, 0, 5, 1));
+            add(new Cell(State.OPENED, 0, 6, 1));
+            add(new Cell(State.OPENED, 0, 7, 1));
+            add(new Cell(State.OPENED, 0, 8, 1));
+            add(new Cell(State.OPENED, 0, 9, 1));
+            add(new Cell(State.OPENED, 0, 10, 1));
+            add(new Cell(State.OPENED, 0, 11, 1));
+            add(new Cell(State.OPENED, 1, 12, 1));
+            add(new Cell(State.MINED, null, 13, 1));
+            add(new Cell(State.OPENED, 1, 14, 1));
+            add(new Cell(State.OPENED, 0, 15, 1));
+            add(new Cell(State.OPENED, 1, 16, 1));
+            add(new Cell(State.MINED, null, 17, 1));
+            add(new Cell(State.CLOSED, null, 18, 1));
+            add(new Cell(State.CLOSED, null, 19, 1));
+            add(new Cell(State.CLOSED, null, 20, 1));
+            add(new Cell(State.OPENED, 1, 21, 1));
+            add(new Cell(State.OPENED, 0, 22, 1));
+            add(new Cell(State.OPENED, 0, 23, 1));
+            add(new Cell(State.OPENED, 1, 1, 2));
+            add(new Cell(State.OPENED, 1, 2, 2));
+            add(new Cell(State.OPENED, 1, 3, 2));
+            add(new Cell(State.OPENED, 0, 4, 2));
+            add(new Cell(State.OPENED, 0, 5, 2));
+            add(new Cell(State.OPENED, 1, 6, 2));
+            add(new Cell(State.OPENED, 1, 7, 2));
+            add(new Cell(State.OPENED, 2, 8, 2));
+            add(new Cell(State.OPENED, 1, 9, 2));
+            add(new Cell(State.OPENED, 1, 10, 2));
+            add(new Cell(State.OPENED, 0, 11, 2));
+            add(new Cell(State.OPENED, 1, 12, 2));
+            add(new Cell(State.OPENED, 1, 13, 2));
+            add(new Cell(State.OPENED, 1, 14, 2));
+            add(new Cell(State.OPENED, 0, 15, 2));
+            add(new Cell(State.OPENED, 1, 16, 2));
+            add(new Cell(State.OPENED, 2, 17, 2));
+            add(new Cell(State.CLOSED, null, 18, 2));
+            add(new Cell(State.CLOSED, null, 19, 2));
+            add(new Cell(State.CLOSED, null, 20, 2));
+            add(new Cell(State.OPENED, 1, 21, 2));
+            add(new Cell(State.OPENED, 0, 22, 2));
+            add(new Cell(State.OPENED, 0, 23, 2));
+            add(new Cell(State.OPENED, 1, 1, 3));
+            add(new Cell(State.MINED, null, 2, 3));
+            add(new Cell(State.OPENED, 1, 3, 3));
+            add(new Cell(State.OPENED, 0, 4, 3));
+            add(new Cell(State.OPENED, 0, 5, 3));
+            add(new Cell(State.OPENED, 1, 6, 3));
+            add(new Cell(State.MINED, null, 7, 3));
+            add(new Cell(State.OPENED, 4, 8, 3));
+            add(new Cell(State.CLOSED, null, 9, 3));
+            add(new Cell(State.OPENED, 2, 10, 3));
+            add(new Cell(State.OPENED, 0, 11, 3));
+            add(new Cell(State.OPENED, 0, 12, 3));
+            add(new Cell(State.OPENED, 0, 13, 3));
+            add(new Cell(State.OPENED, 0, 14, 3));
+            add(new Cell(State.OPENED, 0, 15, 3));
+            add(new Cell(State.OPENED, 0, 16, 3));
+            add(new Cell(State.OPENED, 1, 17, 3));
+            add(new Cell(State.CLOSED, null, 18, 3));
+            add(new Cell(State.CLOSED, null, 19, 3));
+            add(new Cell(State.CLOSED, null, 20, 3));
+            add(new Cell(State.OPENED, 1, 21, 3));
+            add(new Cell(State.OPENED, 0, 22, 3));
+            add(new Cell(State.OPENED, 0, 23, 3));
+            add(new Cell(State.OPENED, 1, 1, 4));
+            add(new Cell(State.OPENED, 1, 2, 4));
+            add(new Cell(State.OPENED, 1, 3, 4));
+            add(new Cell(State.OPENED, 0, 4, 4));
+            add(new Cell(State.OPENED, 0, 5, 4));
+            add(new Cell(State.OPENED, 1, 6, 4));
+            add(new Cell(State.OPENED, 2, 7, 4));
+            add(new Cell(State.MINED, null, 8, 4));
+            add(new Cell(State.CLOSED, null, 9, 4));
+            add(new Cell(State.OPENED, 2, 10, 4));
+            add(new Cell(State.OPENED, 0, 11, 4));
+            add(new Cell(State.OPENED, 0, 12, 4));
+            add(new Cell(State.OPENED, 0, 13, 4));
+            add(new Cell(State.OPENED, 0, 14, 4));
+            add(new Cell(State.OPENED, 0, 15, 4));
+            add(new Cell(State.OPENED, 1, 16, 4));
+            add(new Cell(State.OPENED, 2, 17, 4));
+            add(new Cell(State.CLOSED, null, 18, 4));
+            add(new Cell(State.CLOSED, null, 19, 4));
+            add(new Cell(State.CLOSED, null, 20, 4));
+            add(new Cell(State.OPENED, 1, 21, 4));
+            add(new Cell(State.OPENED, 0, 22, 4));
+            add(new Cell(State.OPENED, 0, 23, 4));
+            add(new Cell(State.OPENED, 1, 1, 5));
+            add(new Cell(State.OPENED, 1, 2, 5));
+            add(new Cell(State.OPENED, 1, 3, 5));
+            add(new Cell(State.OPENED, 0, 4, 5));
+            add(new Cell(State.OPENED, 0, 5, 5));
+            add(new Cell(State.OPENED, 0, 6, 5));
+            add(new Cell(State.OPENED, 1, 7, 5));
+            add(new Cell(State.OPENED, 2, 8, 5));
+            add(new Cell(State.OPENED, 2, 9, 5));
+            add(new Cell(State.OPENED, 1, 10, 5));
+            add(new Cell(State.OPENED, 0, 11, 5));
+            add(new Cell(State.OPENED, 0, 12, 5));
+            add(new Cell(State.OPENED, 0, 13, 5));
+            add(new Cell(State.OPENED, 1, 14, 5));
+            add(new Cell(State.OPENED, 1, 15, 5));
+            add(new Cell(State.OPENED, 2, 16, 5));
+            add(new Cell(State.MINED, null, 17, 5));
+            add(new Cell(State.OPENED, 1, 18, 5));
+            add(new Cell(State.OPENED, 1, 19, 5));
+            add(new Cell(State.OPENED, 1, 20, 5));
+            add(new Cell(State.OPENED, 1, 21, 5));
+            add(new Cell(State.OPENED, 0, 22, 5));
+            add(new Cell(State.OPENED, 0, 23, 5));
+            add(new Cell(State.OPENED, 2, 1, 6));
+            add(new Cell(State.MINED, null, 2, 6));
+            add(new Cell(State.OPENED, 2, 3, 6));
+            add(new Cell(State.OPENED, 1, 4, 6));
+            add(new Cell(State.OPENED, 1, 5, 6));
+            add(new Cell(State.OPENED, 0, 6, 6));
+            add(new Cell(State.OPENED, 0, 7, 6));
+            add(new Cell(State.OPENED, 0, 8, 6));
+            add(new Cell(State.OPENED, 0, 9, 6));
+            add(new Cell(State.OPENED, 0, 10, 6));
+            add(new Cell(State.OPENED, 0, 11, 6));
+            add(new Cell(State.OPENED, 1, 12, 6));
+            add(new Cell(State.OPENED, 1, 13, 6));
+            add(new Cell(State.OPENED, 2, 14, 6));
+            add(new Cell(State.MINED, null, 15, 6));
+            add(new Cell(State.OPENED, 2, 16, 6));
+            add(new Cell(State.OPENED, 1, 17, 6));
+            add(new Cell(State.OPENED, 1, 18, 6));
+            add(new Cell(State.OPENED, 0, 19, 6));
+            add(new Cell(State.OPENED, 0, 20, 6));
+            add(new Cell(State.OPENED, 0, 21, 6));
+            add(new Cell(State.OPENED, 0, 22, 6));
+            add(new Cell(State.OPENED, 0, 23, 6));
+            add(new Cell(State.CLOSED, null, 1, 7));
+            add(new Cell(State.OPENED, 2, 2, 7));
+            add(new Cell(State.OPENED, 2, 3, 7));
+            add(new Cell(State.MINED, null, 4, 7));
+            add(new Cell(State.OPENED, 1, 5, 7));
+            add(new Cell(State.OPENED, 0, 6, 7));
+            add(new Cell(State.OPENED, 1, 7, 7));
+            add(new Cell(State.OPENED, 1, 8, 7));
+            add(new Cell(State.OPENED, 1, 9, 7));
+            add(new Cell(State.OPENED, 0, 10, 7));
+            add(new Cell(State.OPENED, 0, 11, 7));
+            add(new Cell(State.OPENED, 1, 12, 7));
+            add(new Cell(State.MINED, null, 13, 7));
+            add(new Cell(State.OPENED, 2, 14, 7));
+            add(new Cell(State.OPENED, 2, 15, 7));
+            add(new Cell(State.OPENED, 2, 16, 7));
+            add(new Cell(State.OPENED, 2, 17, 7));
+            add(new Cell(State.OPENED, 1, 18, 7));
+            add(new Cell(State.OPENED, 1, 19, 7));
+            add(new Cell(State.OPENED, 1, 20, 7));
+            add(new Cell(State.OPENED, 1, 21, 7));
+            add(new Cell(State.OPENED, 1, 22, 7));
+            add(new Cell(State.OPENED, 0, 23, 7));
+            add(new Cell(State.CLOSED, null, 1, 8));
+            add(new Cell(State.OPENED, 1, 2, 8));
+            add(new Cell(State.OPENED, 1, 3, 8));
+            add(new Cell(State.OPENED, 1, 4, 8));
+            add(new Cell(State.OPENED, 1, 5, 8));
+            add(new Cell(State.OPENED, 0, 6, 8));
+            add(new Cell(State.OPENED, 1, 7, 8));
+            add(new Cell(State.MINED, null, 8, 8));
+            add(new Cell(State.OPENED, 2, 9, 8));
+            add(new Cell(State.OPENED, 1, 10, 8));
+            add(new Cell(State.OPENED, 0, 11, 8));
+            add(new Cell(State.OPENED, 1, 12, 8));
+            add(new Cell(State.OPENED, 1, 13, 8));
+            add(new Cell(State.OPENED, 2, 14, 8));
+            add(new Cell(State.OPENED, 2, 15, 8));
+            add(new Cell(State.MINED, null, 16, 8));
+            add(new Cell(State.OPENED, 2, 17, 8));
+            add(new Cell(State.MINED, null, 18, 8));
+            add(new Cell(State.OPENED, 1, 19, 8));
+            add(new Cell(State.OPENED, 2, 20, 8));
+            add(new Cell(State.MINED, null, 21, 8));
+            add(new Cell(State.OPENED, 3, 22, 8));
+            add(new Cell(State.OPENED, 1, 23, 8));
+            add(new Cell(State.CLOSED, null, 1, 9));
+            add(new Cell(State.OPENED, 1, 2, 9));
+            add(new Cell(State.OPENED, 1, 3, 9));
+            add(new Cell(State.OPENED, 1, 4, 9));
+            add(new Cell(State.OPENED, 1, 5, 9));
+            add(new Cell(State.OPENED, 1, 6, 9));
+            add(new Cell(State.OPENED, 2, 7, 9));
+            add(new Cell(State.CLOSED, null, 8, 9));
+            add(new Cell(State.CLOSED, null, 9, 9));
+            add(new Cell(State.OPENED, 2, 10, 9));
+            add(new Cell(State.OPENED, 1, 11, 9));
+            add(new Cell(State.OPENED, 1, 12, 9));
+            add(new Cell(State.OPENED, 0, 13, 9));
+            add(new Cell(State.OPENED, 1, 14, 9));
+            add(new Cell(State.MINED, null, 15, 9));
+            add(new Cell(State.OPENED, 2, 16, 9));
+            add(new Cell(State.OPENED, 2, 17, 9));
+            add(new Cell(State.OPENED, 1, 18, 9));
+            add(new Cell(State.OPENED, 1, 19, 9));
+            add(new Cell(State.OPENED, 2, 20, 9));
+            add(new Cell(State.CLOSED, null, 21, 9));
+            add(new Cell(State.CLOSED, null, 22, 9));
+            add(new Cell(State.CLOSED, null, 23, 9));
+            add(new Cell(State.CLOSED, null, 1, 10));
+            add(new Cell(State.CLOSED, null, 2, 10));
+            add(new Cell(State.CLOSED, null, 3, 10));
+            add(new Cell(State.CLOSED, null, 4, 10));
+            add(new Cell(State.CLOSED, null, 5, 10));
+            add(new Cell(State.CLOSED, null, 6, 10));
+            add(new Cell(State.CLOSED, null, 7, 10));
+            add(new Cell(State.CLOSED, null, 8, 10));
+            add(new Cell(State.CLOSED, null, 9, 10));
+            add(new Cell(State.OPENED, 2, 10, 10));
+            add(new Cell(State.MINED, null, 11, 10));
+            add(new Cell(State.OPENED, 1, 12, 10));
+            add(new Cell(State.OPENED, 0, 13, 10));
+            add(new Cell(State.OPENED, 1, 14, 10));
+            add(new Cell(State.OPENED, 1, 15, 10));
+            add(new Cell(State.OPENED, 1, 16, 10));
+            add(new Cell(State.OPENED, 0, 17, 10));
+            add(new Cell(State.OPENED, 0, 18, 10));
+            add(new Cell(State.OPENED, 0, 19, 10));
+            add(new Cell(State.OPENED, 1, 20, 10));
+            add(new Cell(State.OPENED, 2, 21, 10));
+            add(new Cell(State.OPENED, 2, 22, 10));
+            add(new Cell(State.OPENED, 1, 23, 10));
+            add(new Cell(State.CLOSED, null, 1, 11));
+            add(new Cell(State.CLOSED, null, 2, 11));
+            add(new Cell(State.CLOSED, null, 3, 11));
+            add(new Cell(State.CLOSED, null, 4, 11));
+            add(new Cell(State.CLOSED, null, 5, 11));
+            add(new Cell(State.CLOSED, null, 6, 11));
+            add(new Cell(State.CLOSED, null, 7, 11));
+            add(new Cell(State.CLOSED, null, 8, 11));
+            add(new Cell(State.CLOSED, null, 9, 11));
+            add(new Cell(State.CLOSED, null, 10, 11));
+            add(new Cell(State.OPENED, 2, 11, 11));
+            add(new Cell(State.OPENED, 2, 12, 11));
+            add(new Cell(State.OPENED, 2, 13, 11));
+            add(new Cell(State.OPENED, 2, 14, 11));
+            add(new Cell(State.OPENED, 1, 15, 11));
+            add(new Cell(State.OPENED, 0, 16, 11));
+            add(new Cell(State.OPENED, 0, 17, 11));
+            add(new Cell(State.OPENED, 0, 18, 11));
+            add(new Cell(State.OPENED, 0, 19, 11));
+            add(new Cell(State.OPENED, 0, 20, 11));
+            add(new Cell(State.OPENED, 0, 21, 11));
+            add(new Cell(State.OPENED, 0, 22, 11));
+            add(new Cell(State.OPENED, 0, 23, 11));
+            add(new Cell(State.CLOSED, null, 1, 12));
+            add(new Cell(State.CLOSED, null, 2, 12));
+            add(new Cell(State.CLOSED, null, 3, 12));
+            add(new Cell(State.CLOSED, null, 4, 12));
+            add(new Cell(State.CLOSED, null, 5, 12));
+            add(new Cell(State.CLOSED, null, 6, 12));
+            add(new Cell(State.CLOSED, null, 7, 12));
+            add(new Cell(State.CLOSED, null, 8, 12));
+            add(new Cell(State.CLOSED, null, 9, 12));
+            add(new Cell(State.CLOSED, null, 10, 12));
+            add(new Cell(State.OPENED, 1, 11, 12));
+            add(new Cell(State.OPENED, 1, 12, 12));
+            add(new Cell(State.MINED, null, 13, 12));
+            add(new Cell(State.MINED, null, 14, 12));
+            add(new Cell(State.OPENED, 1, 15, 12));
+            add(new Cell(State.OPENED, 0, 16, 12));
+            add(new Cell(State.OPENED, 0, 17, 12));
+            add(new Cell(State.OPENED, 1, 18, 12));
+            add(new Cell(State.OPENED, 1, 19, 12));
+            add(new Cell(State.OPENED, 1, 20, 12));
+            add(new Cell(State.OPENED, 1, 21, 12));
+            add(new Cell(State.OPENED, 2, 22, 12));
+            add(new Cell(State.OPENED, 2, 23, 12));
+            add(new Cell(State.CLOSED, null, 1, 13));
+            add(new Cell(State.CLOSED, null, 2, 13));
+            add(new Cell(State.CLOSED, null, 3, 13));
+            add(new Cell(State.CLOSED, null, 4, 13));
+            add(new Cell(State.CLOSED, null, 5, 13));
+            add(new Cell(State.CLOSED, null, 6, 13));
+            add(new Cell(State.CLOSED, null, 7, 13));
+            add(new Cell(State.CLOSED, null, 8, 13));
+            add(new Cell(State.CLOSED, null, 9, 13));
+            add(new Cell(State.CLOSED, null, 10, 13));
+            add(new Cell(State.OPENED, 1, 11, 13));
+            add(new Cell(State.OPENED, 1, 12, 13));
+            add(new Cell(State.OPENED, 2, 13, 13));
+            add(new Cell(State.OPENED, 2, 14, 13));
+            add(new Cell(State.OPENED, 1, 15, 13));
+            add(new Cell(State.OPENED, 0, 16, 13));
+            add(new Cell(State.OPENED, 0, 17, 13));
+            add(new Cell(State.OPENED, 1, 18, 13));
+            add(new Cell(State.MINED, null, 19, 13));
+            add(new Cell(State.OPENED, 1, 20, 13));
+            add(new Cell(State.OPENED, 1, 21, 13));
+            add(new Cell(State.MINED, null, 22, 13));
+            add(new Cell(State.MINED, null, 23, 13));
+            add(new Cell(State.CLOSED, null, 1, 14));
+            add(new Cell(State.CLOSED, null, 2, 14));
+            add(new Cell(State.CLOSED, null, 3, 14));
+            add(new Cell(State.CLOSED, null, 4, 14));
+            add(new Cell(State.CLOSED, null, 5, 14));
+            add(new Cell(State.CLOSED, null, 6, 14));
+            add(new Cell(State.CLOSED, null, 7, 14));
+            add(new Cell(State.CLOSED, null, 8, 14));
+            add(new Cell(State.CLOSED, null, 9, 14));
+            add(new Cell(State.CLOSED, null, 10, 14));
+            add(new Cell(State.CLOSED, null, 11, 14));
+            add(new Cell(State.CLOSED, null, 12, 14));
+            add(new Cell(State.CLOSED, null, 13, 14));
+            add(new Cell(State.OPENED, 1, 14, 14));
+            add(new Cell(State.OPENED, 1, 15, 14));
+            add(new Cell(State.OPENED, 0, 16, 14));
+            add(new Cell(State.OPENED, 0, 17, 14));
+            add(new Cell(State.OPENED, 1, 18, 14));
+            add(new Cell(State.OPENED, 1, 19, 14));
+            add(new Cell(State.OPENED, 1, 20, 14));
+            add(new Cell(State.OPENED, 1, 21, 14));
+            add(new Cell(State.OPENED, 3, 22, 14));
+            add(new Cell(State.CLOSED, null, 23, 14));
+            add(new Cell(State.CLOSED, null, 1, 15));
+            add(new Cell(State.CLOSED, null, 2, 15));
+            add(new Cell(State.CLOSED, null, 3, 15));
+            add(new Cell(State.CLOSED, null, 4, 15));
+            add(new Cell(State.CLOSED, null, 5, 15));
+            add(new Cell(State.CLOSED, null, 6, 15));
+            add(new Cell(State.CLOSED, null, 7, 15));
+            add(new Cell(State.CLOSED, null, 8, 15));
+            add(new Cell(State.CLOSED, null, 9, 15));
+            add(new Cell(State.CLOSED, null, 10, 15));
+            add(new Cell(State.CLOSED, null, 11, 15));
+            add(new Cell(State.CLOSED, null, 12, 15));
+            add(new Cell(State.CLOSED, null, 13, 15));
+            add(new Cell(State.CLOSED, null, 14, 15));
+            add(new Cell(State.OPENED, 1, 15, 15));
+            add(new Cell(State.OPENED, 0, 16, 15));
+            add(new Cell(State.OPENED, 0, 17, 15));
+            add(new Cell(State.OPENED, 0, 18, 15));
+            add(new Cell(State.OPENED, 0, 19, 15));
+            add(new Cell(State.OPENED, 0, 20, 15));
+            add(new Cell(State.OPENED, 0, 21, 15));
+            add(new Cell(State.OPENED, 1, 22, 15));
+            add(new Cell(State.CLOSED, null, 23, 15));
+        }};
+    }
+
+    private Set<Cell> getBeginnerExpectedCells() {
+        return new HashSet<>() {{
             add(new Cell(State.OPENED, 0, 1, 1));
             add(new Cell(State.OPENED, 1, 2, 1));
             add(new Cell(State.OPENED, 1, 3, 1));
@@ -148,10 +520,5 @@ public class MineSweeperBotTest {
             add(new Cell(State.CLOSED, null, 8, 9));
             add(new Cell(State.CLOSED, null, 9, 9));
         }};
-    }
-
-    @AfterAll
-    static void close() {
-        Driver.INSTANCE.release();
     }
 }
