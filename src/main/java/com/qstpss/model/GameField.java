@@ -12,10 +12,10 @@ public class GameField {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.amountOfMines = amountOfMines;
-        this.field = new Cell[sizeX][sizeY];
-        for (int i = 0; i < sizeY; i++) {
-            for (int j = 0; j < sizeX; j++) {
-                this.field[i][j] = new Cell(State.CLOSED, null, j, i);
+        this.field = new Cell[sizeY][sizeX];
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++) {
+                this.field[y][x] = new Cell(State.CLOSED, null, x, y);
             }
         }
     }

@@ -6,16 +6,32 @@ public class Cell {
 
     private State state;
     private Integer adjacentMinesCount;
-    private int coordinateX;
-    private int coordinateY;
+    private int positionX;
+    private int positionY;
 
-    public Cell(State state, Integer adjacentMinesCount, int coordinateX, int coordinateY) {
+
+    public Cell(State state, Integer adjacentMinesCount, int positionX, int positionY) {
         this.state = state;
         this.adjacentMinesCount = adjacentMinesCount;
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
 
     public State getState() {
         return state;
@@ -33,21 +49,13 @@ public class Cell {
         this.adjacentMinesCount = adjacentMinesCount;
     }
 
-    public int getCoordinateX() {
-        return coordinateX;
-    }
-
-    public int getCoordinateY() {
-        return coordinateY;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return coordinateX == cell.coordinateX &&
-                coordinateY == cell.coordinateY &&
+        return positionX == cell.positionX &&
+                positionY == cell.positionY &&
                 state == cell.state &&
                 Objects.equals(adjacentMinesCount, cell.adjacentMinesCount);
     }
@@ -55,6 +63,16 @@ public class Cell {
     @Override
     public int hashCode() {
 
-        return Objects.hash(state, adjacentMinesCount, coordinateX, coordinateY);
+        return Objects.hash(state, adjacentMinesCount, positionX, positionY);
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "state=" + state +
+                ", adjacentMinesCount=" + adjacentMinesCount +
+                ", positionX=" + positionX +
+                ", positionY=" + positionY +
+                '}';
     }
 }

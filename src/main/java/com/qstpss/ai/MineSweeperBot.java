@@ -24,7 +24,7 @@ public class MineSweeperBot {
         this.difficulty = difficulty;
         WebElement gameOptionsElement = driver.findElement(By.cssSelector("#options-link"));
         gameOptionsElement.click();
-        WebElement gameDifficultyElement = null;
+        WebElement gameDifficultyElement;
         int amountOfMines;
         int sizeX;
         int sizeY;
@@ -82,7 +82,7 @@ public class MineSweeperBot {
                         cellState = State.CLOSED;
                     }
                 }
-                field[y][x] = new Cell(cellState, adjacentMinesCount, x, y);
+                field[y][x] = new Cell(cellState, adjacentMinesCount, x + 1, y + 1);
             }
         }
     }
@@ -101,7 +101,7 @@ public class MineSweeperBot {
         Random random = new Random(System.currentTimeMillis());
         int rand = random.nextInt(closedCells.size());
         Cell randomCell = closedCells.get(rand);
-        String cellId = randomCell.getCoordinateY() + 1 + "_" + randomCell.getCoordinateX() + 1;
+        String cellId = randomCell.getPositionY() + "_" + randomCell.getPositionX();
         WebElement cellElement = driver.findElement(By.id(cellId));
         cellElement.click();
     }
@@ -124,5 +124,9 @@ public class MineSweeperBot {
 
     public GameField getGameField() {
         return gameField;
+    }
+
+    public void setGameField(GameField gameField) {
+        this.gameField = gameField;//todo it is needed for test purpose only! decide what to do with this
     }
 }
