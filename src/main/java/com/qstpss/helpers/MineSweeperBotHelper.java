@@ -9,7 +9,6 @@ import java.util.List;
 
 public class MineSweeperBotHelper {
 
-    //todo write test
     public static List<Cell> getClosedCells(GameField gameField) {
         Cell[][] field = gameField.getField();
         List<Cell> closedCells = new ArrayList<>();

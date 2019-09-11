@@ -48,10 +48,12 @@ public class MineSweeperBot {
                 sizeY = 16;
                 gameDifficultyElement = driver.findElement(By.cssSelector("#expert"));
                 break;
-            default:
+            case SPECIAL:
                 gameDifficultyElement = driver.findElement(By.cssSelector("#custom"));
                 throw new UnsupportedOperationException();
                 //todo add selecting a size amount of mines
+            default:
+                throw new IllegalArgumentException("GameDifficulty " + difficulty + " is not supported");
         }
         gameField = new GameField(sizeX, sizeY, amountOfMines);
         gameDifficultyElement.click();
@@ -119,7 +121,7 @@ public class MineSweeperBot {
         return gameField;
     }
 
-    public void setGameField(GameField gameField) {
-        this.gameField = gameField;//todo it is needed for test purpose only! decide what to do with this
+    void setGameField(GameField gameField) {
+        this.gameField = gameField;
     }
 }
