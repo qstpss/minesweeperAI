@@ -15,7 +15,7 @@ public class GameField {
         this.field = new Cell[sizeY][sizeX];
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
-                this.field[y][x] = new Cell(State.CLOSED, null, x, y);
+                this.field[y][x] = new Cell(State.CLOSED, null, x + 1, y + 1);
             }
         }
     }
