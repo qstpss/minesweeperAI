@@ -22,4 +22,16 @@ public class MineSweeperBotHelper {
         }
         return closedCells;
     }
+
+    public static int getAmountOfAdjacentOpenedCells(GameField gameField, Cell targetCell) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static List<Cell> getAdjacentClosedAndMinedCells(GameField gameField, Cell targetCell) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static int getAmountOfAdjacentClosedCells(GameField gameField, Cell targetCell) {
+        throw new UnsupportedOperationException();
+    }
 }

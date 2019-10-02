@@ -1,7 +1,8 @@
-package com.qstpss.ai;
+package com.qstpss.ai.phases;
 
-public final class ClickPhase implements Phase {
-    private MineSweeperBot mineSweeperBot;
+import com.qstpss.ai.MineSweeperBot;
+
+public final class ClickPhase extends Phase {
 
     private ClickPhase(){
 
