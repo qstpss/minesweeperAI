@@ -5,7 +5,9 @@ import com.qstpss.model.GameField;
 import com.qstpss.model.State;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MineSweeperBotHelper {
 
@@ -27,11 +29,23 @@ public class MineSweeperBotHelper {
         throw new UnsupportedOperationException();
     }
 
-    public static List<Cell> getAdjacentClosedAndMinedCells(GameField gameField, Cell targetCell) {
-        throw new UnsupportedOperationException();
+    public static List<Cell> getAdjacentClosedCells(GameField gameField, Cell targetCell) {
+        Cell[][] field = gameField.getField();
+        return Arrays.stream(field).flatMap(Arrays::stream)
+                .filter(
+                        cell -> (cell.getState() == State.CLOSED) &&
+                        isAdjacentCell(targetCell, cell)
+                ).collect(Collectors.toList());
     }
 
-    public static int getAmountOfAdjacentClosedCells(GameField gameField, Cell targetCell) {
-        throw new UnsupportedOperationException();
+    private static boolean isAdjacentCell(Cell targetCell, Cell checkedCell) {
+        return ((checkedCell.getPositionY() == targetCell.getPositionY()) ||
+                (checkedCell.getPositionY() == targetCell.getPositionY() + 1) ||
+                (checkedCell.getPositionY() == targetCell.getPositionY() - 1))
+                &&
+                ((checkedCell.getPositionX() == targetCell.getPositionX()) ||
+                (checkedCell.getPositionX() == targetCell.getPositionX() + 1) ||
+                (checkedCell.getPositionX() == targetCell.getPositionX() - 1));
     }
+
 }

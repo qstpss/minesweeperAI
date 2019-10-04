@@ -8,7 +8,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import static com.qstpss.helpers.MineSweeperBotHelper.getAdjacentClosedCells;
 
 
 public class MineSweeperBot {
@@ -99,6 +102,30 @@ public class MineSweeperBot {
         String cellId = randomCell.getPositionY() + "_" + randomCell.getPositionX();
         WebElement cellElement = driver.findElement(By.id(cellId));
         cellElement.click();
+    }
+
+    //TODO debug it
+    public void searchAndMineAdjacentCells() {
+        Cell[][] field = gameField.getField();
+        outer:
+        for (int y = 0; y < gameField.getSizeY(); y++) {
+            for (int x = 0; x < gameField.getSizeX(); x++) {
+                Cell currentCell = field[y][x];
+                if (currentCell.getState() == State.CLOSED || currentCell.getState() == State.MINED) {
+                    continue;
+                }
+                List<Cell> closedAdjacentCellsList = getAdjacentClosedCells(gameField, currentCell);
+                int closedCells = closedAdjacentCellsList.size();
+                if (currentCell.getAdjacentMinesCount() >= closedCells) {
+                    closedAdjacentCellsList.stream()
+                            .filter(cell -> cell.getState() == State.CLOSED)
+                            .forEach(cell ->
+                                    field[cell.getPositionY() - 1][cell.getPositionX() - 1]
+                                            .setState(State.MINED));
+                    break outer;
+                }
+            }
+        }
     }
 
     public int getMinesCountFromIndicator() {
